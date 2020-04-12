@@ -79,3 +79,15 @@ console.log(fun([1, 2, 3, 4], 9));
 // Функция создает новый объект и добавляет ключ - это первый аргумент, а значение - второй аргумент 
 // Проверяет если есть свойство name в переданном объекте, тогда добавляет данное свойство и возвращает новый объект
 
+const createObj = (key, value, obj) => {
+    let newObj = {};
+    newObj[key] = value;
+    for (let prop in obj) {
+        if (String(prop) === "name") {
+        newObj[prop] = obj[prop];
+        }
+    }
+    return newObj;
+};
+
+console.log(createObj("car", "mazda", {name: "John"}));
