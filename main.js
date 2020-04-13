@@ -3,7 +3,7 @@
 // 1
 let string1 = 'Ytube';
 let string2 = 'ou';
-let sliceString = string1.slice(0, 1) + string2 + string1.slice(1, 5) ;
+let sliceString = string1.slice(0, 1) + string2 + (string1.slice(1, 2).toUpperCase()) + string1.slice(2);
 console.log(sliceString); // --> YouTube
 
 
@@ -13,7 +13,7 @@ let project = 'проекта';
 let team = 'команда';
 let howMuch = 'Сколько';
 let str = 'нужно программистов чтобы сделать проект ?';
-let sentence = `${howMuch} ${str} Для ${project} ${str.slice(0, 5)} ${team} из ${numbers.slice(0, 1)} человек`;
+let sentence = `${howMuch} ${str} Для ${project} ${str.slice(0, 5)} ${team} из ${numbers.slice(0, 1) + numbers.slice(1)} человек`;
 console.log(sentence) // --> собрать предложение
 
 // 3
@@ -82,12 +82,10 @@ console.log(fun([1, 2, 3, 4], 9));
 const createObj = (key, value, obj) => {
     let newObj = {};
     newObj[key] = value;
-    for (let prop in obj) {
-        if (String(prop) === "name") {
-        newObj[prop] = obj[prop];
-        }
+    if(obj.name){
+        newObj.name = obj.name;
+        return newObj
     }
-    return newObj;
 };
 
 console.log(createObj("car", "mazda", {name: "John"}));
