@@ -84,8 +84,8 @@ const createObj = (key, value, obj) => {
     newObj[key] = value;
     if(obj.name){
         newObj.name = obj.name;
-        return newObj
     }
+    return newObj
 };
 
 console.log(createObj("car", "mazda", {name: "John"}));
