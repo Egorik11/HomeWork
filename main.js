@@ -1,91 +1,218 @@
-'use strict';
-
-// 1
-let string1 = 'Ytube';
-let string2 = 'ou';
-let sliceString = string1.slice(0, 1) + string2 + (string1.slice(1, 2).toUpperCase()) + string1.slice(2);
-console.log(sliceString); // --> YouTube
-
-
-// 2
-let numbers = [25, 1];
-let project = 'проекта';
-let team = 'команда';
-let howMuch = 'Сколько';
-let str = 'нужно программистов чтобы сделать проект ?';
-let sentence = `${howMuch} ${str} Для ${project} ${str.slice(0, 5)} ${team} из ${numbers.slice(0, 1) + numbers.slice(1)} человек`;
-console.log(sentence) // --> собрать предложение
-
-// 3
-// Напишите функцию fizzBuzz, которая будет возвращать
-// 'Fizz' если передаваемый параметр кратен 3,
-// 'Buzz', если передаваемый параметр кратен 5,
-// 'FizzBuzz' - если параметр кратен 3 и 5.
-// Если передаваемое число не кратно 3 или 5, то вернуть указанный параметр
-function fizzBuzz(num){
-    if(num % (3 && 5) === 0){
-        console.log('FizzBuzz');
-    } else if (num % 3 === 0){
-        console.log('Fizz');
-    } else if (num % 5 === 0){
-        console.log('Buzz');
-    } else if(!(num % (3 && 5) === 0) ){
-        console.log(num);
-    }
-}
-fizzBuzz(30);
-
-// 4
-// Напишите функцию которая будет возвращать объект
-// с свойством name, а значением будет первый аргумент функции
-function returnObj(value){
-    return ({name: value});
-}
-console.log(returnObj('Егор'));
+// * Найти пользователя по идентификатору (_id)
+// * @param {String} id - идентификатор пользователя
+// * @return {Object} - объект пользователя
+// */
+// function getUserById(id) {
+//     for(let i = 0; i < users.length; i++){
+//          if(users[i]._id === id){
+//              console.log(users[i])
+//          }
+//     }
+// }
+// getUserById("5a58d21c52dc0461eb0e45f6")
 
 
-// 5
-// Функция будет принимать 1 аргумент
-// - ОБЪЕКТ у которого
-// будет свойство name
-// и возвращать новый объект изменяя свойство name
-// в большой регистр
-
-function upperObj(value){
-    let newObj = {
-        name: value.toUpperCase()
-    }
-    console.log(newObj);
-}
-upperObj('егор');
 
 
-// 6
-// Напишите функцию которая принимает в качестве аргумента массив и элемент массива, 
-// и добавляет элемент в конец массива (без метода push)
+// ------------------------------------------------------------------------------------------------
 
-const fun = (a, b) => {
-    let res = [];
-    for (let i = 0; i < a.length; i++) {
-        res.unshift(a[i]);
-    }
-    res.unshift(b);
-    return res.reverse();
-};
-console.log(fun([1, 2, 3, 4], 9));
+/*
+* Определить средний возраст пользователей
+* @return {Number} - средний возраст
+*/
 
-// 7
-// Напишите функцию которая принимает 3 аргумента, третий аргумент - это объект. 
-// Функция создает новый объект и добавляет ключ - это первый аргумент, а значение - второй аргумент 
-// Проверяет если есть свойство name в переданном объекте, тогда добавляет данное свойство и возвращает новый объект
+// function getAverangeUsers() {
+//     let avarangeUsers = 0;
+//     for(let i = 0; i < users.length; i++){
+//         if(users[i].age){
+//             avarangeUsers += users[i].age / users.length
+//         }
+//     }
+//     console.log(avarangeUsers)
+// }
+// getAverangeUsers()
 
-const createObj = (key, value, obj) => {
-    let newObj = {};
-    newObj[key] = value;
-    if(obj.name){
-        newObj.name = obj.name;
-    }
-    return newObj
-};
 
-console.log(createObj("car", "mazda", {name: "John"}));
+
+
+// ------------------------------------------------------------------------------------------------
+
+/*
+* Определить количество активных пользователей
+* @return {Array} - список активных пользователей
+*/
+// function getActiveUsers() {
+//     let newActiveUsers = []
+//     for(let i = 0; i < users.length; i++){
+//         if(users[i].isActive === true){
+//             newActiveUsers = users[i];
+//             console.log(newActiveUsers)
+//         }
+//     }
+//     return newActiveUsers
+// }
+// getActiveUsers()
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+
+/*
+* Определить сколько пользователей мужского и женского пола
+* @return {Object} - { male: 10, female: 20 }
+*/
+
+// function getUsersGender() {
+//     let genderMaleUsers = users.filter(function(element){
+//         return element.gender === "male"
+//     })
+//     let genderFemaleUsers = users.filter(function(element){
+//         return element.gender === "female"
+//     })
+//     let getUsersObj = {
+//         male: genderMaleUsers.length,
+//         female: genderFemaleUsers.length
+//     }
+//     console.log(getUsersObj)
+// }
+// getUsersGender()
+
+
+
+// ------------------------------------------------------------------------------------------------
+
+/*
+* Определить самого старшего пользователя
+* @return {Number} - возраст самого старшего пользователя
+*/
+// function getOldestUser() {
+//     let oldUsers = 0;
+//     for(let i = 0; i < users.length; i++){
+//         if(oldUsers < users[i].age){
+//             oldUsers = users[i].age
+//         }
+//     }
+//     return oldUsers
+// }
+// console.log(getOldestUser())
+
+// ------------------------------------------------------------------------------------------------
+
+/*
+* Определить самого младшего пользователя
+* @return {Number} - возраст самого младшего пользователя
+*/
+// function getYoungestUser() {
+//     let min = 0
+//     for(let i = 0; i < users.length; i++){
+//         if(users[i].age){
+//             min = Math.min(users[i].age)  
+//         }     
+//     }      
+//     return min
+// }
+// console.log(getYoungestUser())
+
+
+
+
+// // ------------------------------------------------------------------------------------------------
+
+// /*
+// * Сортировать пользователей по возрасту
+// * @param {String} order - указываться asc или desc (по возростанию / по убыванию)
+// * @return {Array} - список сортированных пользователей
+// */
+// function sortUsersByAge(order) {
+//     let ageUserSort = users.sort(function(a, b){
+//         return a.age - b.age
+//     })
+//     if(order === "asc"){
+//         console.log(ageUserSort)
+//     } else if(order === "desc"){
+//         console.log(ageUserSort.reverse())
+//     } else{
+//         console.log('Введите asc - для сортировки по возростанию, desc - для сортировки по убыванию')
+//     }
+// }       
+// sortUsersByAge("asc")
+
+// // ------------------------------------------------------------------------------------------------
+
+// /*
+// * Определить количество пользователей, которые любят определенный фрукт
+// * @param {String} fruitName - название фрукта (apple)
+// * @return {Array} - список пользователей, кто люит этот фрукт
+// */
+// function getFavoriteFruit(fruitName) {
+//     let  fruitFavorite = users.filter(function(element){
+//         return element.favoriteFruit === fruitName
+//     })
+//     console.log(fruitFavorite)
+// }
+// getFavoriteFruit("apple")
+
+
+
+
+// // ------------------------------------------------------------------------------------------------
+
+// /*
+// * Создать новых список пользователей на основе указаных аргументов
+// * @param {Array} fields - список свойств(ключей) по которым нужно брать поля, 
+// * например ["name", "email", "phone", balance]
+// *
+// * @return {Array} - список активных пользователей
+// */
+// function mapUsersByFields(fields) {
+//     let  isActive = users.filter(function(element){
+//         return element.isActive === true 
+//     });
+//     let mapFieldsUser = isActive.map(function(cerrentValue){
+//         return cerrentValue[fields]
+//     });
+//     console.log(mapFieldsUser)
+// }
+// mapUsersByFields(["name"])
+
+
+
+// // ------------------------------------------------------------------------------------------------
+
+// /*
+// * Поиск пользователей по тегам
+// * @param {Array} tags - список тегов(ключей) по которым выполняем, 
+// * @return {Array} - список пользователей у которых есть хотя бы один тег
+// */
+// function getUsersByTags(tags) {
+//     let usersTags = [];
+//     users.forEach(el => {
+//         if(el.tags.includes(tags)){
+//             usersTags.push(el)
+//         }
+//     })
+//     return usersTags
+
+// }
+// console.log(getUsersByTags("ut"))
+
+
+
+
+// // ------------------------------------------------------------------------------------------------
+
+// /*
+// * Какой общий баланс всех пользователей
+// * @return {String} - $23,4344.10
+// */
+// function getBalanceUsers() {
+//   let sum = 0;
+//   users.forEach((el) => {
+//     sum = sum + Number(el.balance.slice(1).replace(",", ""));
+//   });
+//   let result = String(sum).split("");
+//   result.splice(-6, 0, ",");
+//   return "$" + result.join("");
+// }
+// console.log(getBalanceUsers());
