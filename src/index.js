@@ -11,17 +11,15 @@ console.log(users.length, fruits.length, vowels.length);
  * @return {Object} location        Пример: {lat: 61.498616, long: 61.498616}
  */
 function getLocationByUserId(userId) {
-  users.forEach(el => {
-    if (el._id === userId) {
-      let localUsers = {
-        lat: el.latitude,
-        long: el.longitude
-      };
-      console.log(localUsers);
-    }
+  const userLocation = users.reduce((_, user) => {
+    return {
+      lat: user.latitude,
+      long: user.longitude
+    };
   });
+  return userLocation;
 }
-getLocationByUserId("5a58d21c52dc0461eb0e45f6");
+console.log(getLocationByUserId("5a58d21c52dc0461eb0e45f6"));
 
 // ------------------------------------------------------------------------------------------------
 /**
@@ -33,9 +31,9 @@ function mapOrderList(fruits) {
   let friutsOrder = fruits.map(function(el, index) {
     return `${index + 1}. ${el}`;
   });
-  console.log(friutsOrder);
+  return friutsOrder;
 }
-mapOrderList(["banan", "apple", "avocado", "kivi"]);
+console.log(mapOrderList(["banan", "apple", "avocado", "kivi"]));
 
 // ------------------------------------------------------------------------------------------------
 /**
@@ -62,15 +60,16 @@ console.log(mapFruitsWithCount(["banan", "apple", "avocado", "kivi"]));
  */
 function mapFruitsByVowels(fruits, vowels) {
   let fruitsListByVowels = [];
-  for (let i = 0; i < fruits.length; i++) {
-    for (let j = 0; j < vowels.length; j++) {
-      if (fruits[i][0] === vowels[j]) {
-        fruitsListByVowels.push(fruits[i]);
+  fruits.forEach(el => {
+    vowels.forEach(elem => {
+      if (el[0] === elem) {
+        fruitsListByVowels.push(el);
       }
-    }
-  }
+    });
+  });
   return fruitsListByVowels;
 }
+
 console.log(
   mapFruitsByVowels(
     ["banana", "apple", "avocado", "kivi"],
@@ -101,11 +100,8 @@ getCompanyList(users);
 //  */
 
 function getUniqueFavoriteFruits(usersArray) {
-  let uniqueFavoriteFruits = [];
-  usersArray.forEach(el => {
-    if (!uniqueFavoriteFruits.includes(el.favoriteFruit)) {
-      uniqueFavoriteFruits.push(el.favoriteFruit);
-    }
+  const uniqueFavoriteFruits = usersArray.reduce((_, user) => {
+    if (user.favoriteFruit) return user;
   });
   return uniqueFavoriteFruits;
 }
@@ -120,15 +116,9 @@ console.log(getUniqueFavoriteFruits(users));
 
 function sortUsersByField(field) {
   // age!
-  // let uniqueFavoriteFruits = users.sort(function(a, b) {
-  //   return a[field] - b[field]
-  // });
-  // return uniqueFavoriteFruits;
-
-  // isActive!
   let uniqueFavoriteFruits = users.sort(function(a, b) {
-    return b[field] - a[field];
+    return a[field] - b[field];
   });
   return uniqueFavoriteFruits;
 }
-console.log(sortUsersByField("isActive"));
+console.log(sortUsersByField("age"));
