@@ -1,111 +1,69 @@
-'use strict';
+let button = document.querySelector(".clear-completed");
+let check = document.querySelector(".toggle");
+let inputAdd = document.querySelector(".new-todo");
+let ulList = document.querySelector(".todo-list");
+let buttonDestroy = document.querySelectorAll(".destroy");
+let allSelected = document.querySelector(".all")
+let activeButton = document.querySelector(".active")
+let completedButton = document.querySelector(".completed")
 
-// 1. Создайте три переменные. Присвойте первой переменной числовое значение. 
-// Вторая переменная равна первой переменной, увеличенной в три раза. 
-// Третья переменная равна сумме двух первых. Выведите на экран все три.
+inputAdd.onkeypress = (event) => {
+  if (event.keyCode === 13) {
+    store.dispatch(actions.addTodo(event.target.value));
+    console.log(store.getState());;
+  }
+};
 
-// let first = 3,
-//     second = first * 3,
-//     third = first + second;
-// console.log(third);
-
-
-// 2.  Создайте переменные firstName и lastName для хранение имени и фамилии, 
-// запишите в них значения из модального окна prompt. 
-// Выведите на экран приветствие (“What’s up John Doe”).
-
-// let firstName = prompt('введите имя'),
-//     lastName = prompt('введите фамилию');
-// alert(What’s up ${firstName} ${lastName});
-
-// 3.  Создайте переменные x и y для хранения числа. Значения переменные получают из prompt.
-//  Рассчитайте произведение, частное, разность и сумму этих значений. 
-//  Результат последовательно отобразите в модальном окне.
-
-// let x = Number(prompt('введите значение Х')),
-//     y = Number(prompt('введите значение Y'));
-// alert('Произведение чисел ' + x * y);
-// alert('Частное ' + x / y);
-// alert('Разность ' + (x - y));
-// alert('Сумма ' + x + y);
+ulList.addEventListener("click", (event) => {
+	console.log(event);
+	store.dispatch(actions.deleteTodo(event.target.dataset.id));
+	
+})
 
 
-// 4.  Напишите в переменных формулу для расчета з/п за июль с учетом, что количество рабочиx часов, 
-// количество рабочих дней в неделе и рейт за час – переменные значения читаются из prompt.
+completedButton.addEventListener("click", () => {
+	store.dispatch(actions.filterTodos("completed"))
+	activeButton.classList.remove("selected")
+	allSelected.classList.remove("selected")
+	completedButton.classList.add("selected")
+})
 
+activeButton.addEventListener("click", () => {
+	store.dispatch(actions.filterTodos("active"))
+	allSelected.classList.remove("selected")
+	completedButton.classList.remove("selected")
+	activeButton.classList.add("selected")
+})
 
-// const hours = () => {
-//     const workHours = Number(prompt("введите кол-во рабочих часов"));
-//     if (workHours >= 24) {
-//         hours();
-//     }
-//     return workHours;
-//     }
-//     const days = () => {
-//     const workDaysWeek = Number(
-//         prompt("введите кол-во рабочих дней в неделе")
-//     );
-//     if (workDaysWeek >= 7) {
-//         days();
-//     }
-//     return workDaysWeek;
-// }
-// const reyt = Number(prompt("введите зп за час работы"));
-// alert(Зарплата ${hours() * days() * reyt});
+allSelected.addEventListener("click", () => {
+	store.dispatch(actions.filterTodos("all"))
+	activeButton.classList.remove("selected")
+	completedButton.classList.remove("selected")
+	allSelected.classList.add("selected")
+})
 
-
-// 5.  Напишите программу, которая без использования оператора сравнения определяет, 
-// является ли число, введенное пользователем, нечётным.
-
-// let num = Number(prompt('введите нечетное число'));
-
-    // if(num % 2){
-    //     alert('нечетное')
-    // }   else{
-    //     alert('число четное. нажмите F5 и введите нечетное число')
-    // }
-
-
-
-// 6.  Напишите программу, которая проверяет, является ли значение, введенное пользователем, числом.
-
-let num = prompt("Введите любое значение");
-
-if(isNaN(num)){
-    alert('Не число')
-} else {
-    alert('Число')
+function render() {
+	const {items: todos, filter} = store.getState().todos
+	console.log(store.getState())
+	let html = filterTodos(todos, filter).map((todo) => {
+		const checked = todo.completed ? "checked": ""
+		return	`<li class="">
+	<div class="view">
+		<input class="toggle" type="checkbox" ${checked}/><label class="comp">${todo.title}</label
+		><button data-id="${todo.id}" class="destroy"></button>
+	</div>
+</li>`
+	}
+)
+ulList.innerHTML = html;
 }
 
-// 7.  Запишите в переменную случайное число (Math.random()), умножьте его на 100 и округлите. 
-// Получите второе число из окна prompt. 
-// Сравните и отобразите в модальном окне: первое число меньше второго или нет, а также оба значения.
+const store = Redux.createStore(rootReducer);
+// console.log(store.getState());
+
+// console.log(store)
+render()
 
 
-// let firstNumber = Math.floor((Math.random()) * 100);
-// let secondNumber = Number(prompt('введите число от 0 до 100'));
 
-// if(firstNumber < secondNumber){
-//     alert(рандомное число ${firstNumber} меньше вашего ${secondNumber});
-// } else if(firstNumber > secondNumber){
-//     alert(рандомное число ${firstNumber} больше вашего ${secondNumber});
-// } else{
-//     alert(рандомное число ${firstNumber} такое же как и вас ${secondNumber});
-// };
-
-
-// 8.  Создайте переменную str и запишите в нее из prompt такое предложение 
-// «Мне нравится изучать Front-end». Также создайте еще одну переменную и запишите в нее из prompt то, 
-// что вам нравится изучать. С помощью методов строки определите существует ли то что вам нравится изучать в исходной строке str. 
-// Также возьмите подстроку «Мне нравится изучать » из исходной переменной str сохраните ее в переменной. 
-// Создайте еще одну переменную result куда запишите результирующую строку объединяющую 
-// «Мне нравится изучать » и то что вам нравится изучать (примените для этого обратные кавычки  ). 
-// Отобразите результат в модальном окне.
-
-// let str = prompt('Напиши что тебе нравиться' , 'Мне нравится изучать Front-end' );
-// let str2 = prompt('Напиши что тебе нравиться изучать');
-// alert(str.indexOf('JS'));
-
-// let strSlice = str.slice(0, 20);
-// let result = ${strSlice} ${str2};
-// alert(result);
+store.subscribe(render)

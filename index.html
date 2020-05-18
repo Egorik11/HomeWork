@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Todo</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" placeholder="What needs to be done?" />
+      </header>
+      <section class="main">
+        <input id="toggle-all" class="toggle-all" type="checkbox" />
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+          <!-- <li class="">
+            <div class="view">
+              <input class="toggle" type="checkbox" /><label class="comp">Todo 1</label
+              ><button class="destroy"></button>
+            </div>
+          </li>
+          <li class="completed">
+            <div class="view">
+              <input class="toggle" type="checkbox" checked /><label class="comp">Todo 2</label
+              ><button class="destroy"></button>
+            </div>
+          </li>
+          <li class="editing">
+            <div class="view">
+              <input class="toggle" type="checkbox" /><label class="comp">Todo 3</label
+              ><button class="destroy"></button>
+            </div>
+            <input type="text" class="edit" value="Todo 3" />
+          </li> -->
+        </ul>
+      </section>
+      <footer class="footer">
+        <span class="todo-count"><strong>2</strong> items left</span>
+        <ul class="filters">
+          <li>
+            <button class="selected all">All</button>
+          </li>
+          <li>
+            <button class="active">Active</button>
+          </li>
+          <li>
+           <button class="completed">Completed</button>
+          </li>
+        </ul>
+        <button class="clear-completed">Clear completed</button>
+      </footer>
+    </section>
+    <script src="https://npmcdn.com/redux@latest/dist/redux.js"></script>
+    <script src="util.js"></script>
+    <script src="actions.js"></script>
+    <script src="reduser.js"></script>
     <script src="main.js"></script>
-</body>
+  </body>
 </html>
