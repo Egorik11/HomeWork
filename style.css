@@ -140,7 +140,7 @@ body {
 }
 
 .toggle-all:checked + label:before {
-  color: #0127fc;
+  color: #737373;
 }
 
 .todo-list {
@@ -311,9 +311,8 @@ body {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li button.selected {
-  border: 1px solid rgba(175, 47, 47, 0.2);
-  padding: 5px;
+.filters li a.selected {
+  border-color: rgba(175, 47, 47, 0.2);
 }
 
 .clear-completed,
