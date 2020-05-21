@@ -1,177 +1,90 @@
-const newTodo = document.querySelector('.new-todo')
-const todoList = document.querySelector('.todo-list')
-const todoCount = document.querySelector('.todo-count strong')
-const clerTodos = document.querySelector('.clear-completed')
-clerTodos.style.display = 'none'
+const todos = [
+  { title: "task1", description: "сделать что-то", completed: false },
+  { title: "task2", description: "сделать что-то", completed: true },
+  { title: "task3", description: "сделать что-то", completed: false },
+];
+console.log(todos);
 
-newTodo.addEventListener('keyup', event => {
-  if (event.keyCode === 13 && newTodo.value !== '') {
-    const todo = createTodo(newTodo.value)
-    todoList.append(todo)
-    newTodo.value = ''
-
-    const todos = [...todoList.querySelectorAll('li')]
-    countTodos(todos)
-    bindTodosEvent(todos)
-  }
-})
-
-function createTodo(title) {
-  const todo = document.createElement('li')
-  todo.innerHTML = `<div class="view">
-  <!-- completed, editing -->
-  <input class="toggle" type="checkbox"/>
-  <!-- checked -->
-  <label>${title}</label>
-  <button class="destroy"></button>
-  </div>
-  <input type="text" class="edit" value="Todo 3" />`
-
-  bindTodoEvents(todo)
-
-  return todo
-}
-
-function countTodos(todos) {
-  const active = todos.reduce((active, todo) => {
-    if (!todo.classList.contains('completed')) {
-      active.push(todo)
+function addTodo(title, description) {
+  for (let i = 0; i < todos.length; i++) {
+    if (title && description) {
+      return todos.concat({ title, description, completed: false });
     }
-    return active
-  }, [])
-
-  if (todos.length >= 1) {
-    todoCount.textContent = active.length
   }
 }
+// console.log(addTodo('ЗАДАЧА №...', 'Выполнить'));
 
-function bindTodoEvents(todo) {
-  const destroy = todo.querySelector('.destroy')
-  const toggle = todo.querySelector('.toggle')
-  const title = todo.querySelector('label')
-
-  destroy.onclick = deleteTodo
-  toggle.onclick = toggleTodo
-  title.addEventListener('dblclick', editText)
-}
-
-function bindTodosEvent(todos) {
-  const toggleAll = document.querySelector('.toggle-all').nextElementSibling
-  const filterAll = document.querySelector("[data-filter='all']")
-  const filterActive = document.querySelector("[data-filter='active']")
-  const filterCompleted = document.querySelector("[data-filter='completed']")
-
-  toggleAll.onclick = toggleAllTodos
-  clerTodos.onclick = clearCompleted
-  filterAll.onclick = filterTodosAll
-  filterActive.onclick = filterTodosActive
-  filterCompleted.onclick = filterTodosCompleted
-}
-
-function deleteTodo() {
-  const todo = this.closest('li')
-
-  if (!todo.classList.contains('completed')) {
-    --todoCount.textContent
+function toggleTodo(index) {
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[index].completed) {
+      todos[index].completed = false;
+    } else todos[index].completed = true;
   }
-
-  todo.remove()
+  return todos;
 }
+// console.log(toggleTodo(2));
 
-function toggleTodo() {
-  const todo = this.closest('li')
-  todo.classList.toggle('completed')
-  const todos = [...todoList.querySelectorAll('li')]
-  const completed = todos.reduce((completed, todo) => {
-    if (todo.classList.contains('completed')) {
-      completed.push(todo)
-    }
-    return completed
-  }, [])
-
-  if (todo.classList.contains('completed')) {
-    todoCount.textContent--
-    clerTodos.style.display = 'block'
-  } else {
-    todoCount.textContent++
-  }
-
-  if (completed.length === 0) {
-    clerTodos.style.display = 'none'
+function deleteTodo(todos, index) {
+  for (let i = 0; i < todos.length; i++) {
+    return todos.slice(0, index);
   }
 }
+// console.log(deleteTodo(todos, 2));
 
-function editText() {
-  const todo = this.closest('li')
-  const title = todo.querySelector('label')
-  const editField = todo.querySelector('.edit')
-  editField.value = title.innerText
-  todo.className = 'editing'
-
-  editField.addEventListener('keyup', event => {
-    if (event.keyCode === 13 && editField.value !== '') {
-      todo.classList.remove('editing')
-      title.innerText = editField.value
+function updateTodo(index, todo) {
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[index]) {
+      todos[index] = todo;
     }
-  })
+  }
+  return todos;
 }
+// console.log(updateTodo(0, { title: "ЗАДАЧА №...", description: "выполнить" }));
 
-function toggleAllTodos() {
-  const todos = [...document.querySelectorAll('.todo-list li')]
-  const completed = todos.reduce((completed, todo) => {
-    if (todo.classList.contains('completed')) {
-      completed.push(todo)
+function filterTodos(filter) {
+  let result = [];
+  for (let i = 0; i < todos.length; i++) {
+    if (filter === "all") return todos;
+    if (filter === "active" && todos[i].completed === false)
+      result.push(todos[i]);
+    if (filter === "completed" && todos[i].completed === true)
+      result.push(todos[i]);
+  }
+  return result;
+}
+// console.log(filterTodos('completed'));
+
+function searchTodos(search) {
+  let result = [];
+  for (let obj in todos) {
+    for (let item in (object = todos[obj])) {
+      if (item === search || object[item] === search) {
+        result.push(`{${item}: ${object[item]}}`);
+      }
     }
-    return completed
-  }, [])
+  }
+  return result;
+}
+// console.log(searchTodos("task1"));
 
-  todos.forEach(todo => {
-    const toggle = todo.querySelector('.toggle')
-
-    if (!todo.classList.contains('completed')) {
-      todo.className = 'completed'
-      toggle.checked = true
-      --todoCount.textContent
-      clerTodos.style.display = 'block'
-    } else if (completed.length === todos.length) {
-      todo.classList.remove('completed')
-      toggle.checked = false
-      ++todoCount.textContent
-      clerTodos.style.display = 'none'
+function toggleTodos(completed) {
+  for (let i = 0; i < todos.length; i++) {
+    if (completed === true) {
+      todos[i].completed = true;
+    } else if (completed === false) {
+      todos[i].completed = false;
     }
-  })
+  }
+  return todos;
 }
+// console.log(toggleTodos(false))
 
-function clearCompleted() {
-  const todos = [...document.querySelectorAll('.todo-list li')]
-
-  todos.forEach(todo => {
-    if (todo.classList.contains('completed')) {
-      todo.remove()
+function clearCompletedTodos() {
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].completed === true) {
+      todos.splice(i, 1);
     }
-  })
+  }
+  return todos;
 }
-
-function filterTodosAll() {
-  const todos = [...document.querySelectorAll('.todo-list li')]
-  todos.forEach(todo => {
-    todo.style.display = 'block'
-  })
-}
-
-function filterTodosActive() {
-  const todos = [...document.querySelectorAll('.todo-list li')]
-  todos.forEach(todo => {
-    if (todo.classList.contains('completed')) {
-      todo.style.display = 'none'
-    } else todo.style.display = 'block'
-  })
-}
-function filterTodosCompleted() {
-  const todos = [...document.querySelectorAll('.todo-list li')]
-  todos.forEach(todo => {
-    if (!todo.classList.contains('completed')) {
-      todo.style.display = 'none'
-    } else todo.style.display = 'block'
-  })
-}
+// console.log(clearCompletedTodos());
