@@ -1,126 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Parcel Sandbox</title>
-    <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
+    <meta charset="utf-8" />
+    <title>Todo</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-
   <body>
-    <form class="needs-validation" novalidate>
-      <div class="form-group">
-        <label>Name</label>
-        <input
-          type="text"
-          class="form-control"
-          name="name"
-          minlength="10"
-          data-pattern="pattern-1"
-          placeholder="Ivan Petrov"
-          value="Ivan"
-        />
-        <div class="invalid-feedback">Please choose a name.</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input
-          type="tel"
-          class="form-control"
-          data-mask="+38(000)-000-00-00"
-          data-pattern="pattern-2"
-          name="email"
-          placeholder="+38(000)-000-00-00"
-        />
-        <div class="invalid-feedback">Incorrect phone number.</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input
-          type="email"
-          class="form-control"
-          data-pattern="pattern-3"
-          placeholder="name@example.com"
-          value=""
-        />
-        <div class="invalid-feedback">Incorrect e-mail.</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input
-          type="password"
-          class="form-control"
-          data-pattern="pattern-4"
-          placeholder="Password"
-          value="12345678"
-        />
-        <div class="invalid-feedback">Minimum 8 characters</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-    <h3 class="mt-5">Valid example</h3>
-    <hr class="mb-3" />
-
-    <form>
-      <div class="form-group">
-        <label>Name</label>
-        <input
-          type="name"
-          class="form-control is-invalid"
-          data-valid="pattern-1"
-          placeholder="Ivan Petrov"
-        />
-        <div class="invalid-feedback">Please choose a name.</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input
-          type="tel"
-          class="form-control is-valid"
-          data-valid="pattern-2"
-          placeholder="+38(000)-000-00-00"
-          value="+38(000)-000-00-00"
-        />
-        <div class="invalid-feedback">Incorrect phone number.</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input
-          type="email"
-          class="form-control is-invalid"
-          data-valid="pattern-3"
-          placeholder="name@example.com"
-          value="email@"
-        />
-        <div class="invalid-feedback">Incorrect e-mail.</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input
-          type="password"
-          class="form-control is-valid"
-          data-valid="pattern-4"
-          placeholder="Password"
-          value="12345678"
-        />
-        <div class="invalid-feedback">Minimum 8 characters</div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-    <script src="index.js"></script>
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" placeholder="What needs to be done?" />
+      </header>
+      <section class="main">
+        <input id="toggle-all" class="toggle-all" type="checkbox" />
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+          <!-- <li class="">
+            <div class="view">
+              <input class="toggle" type="checkbox" /><label>Todo 1</label
+              ><button class="destroy"></button>
+            </div>
+          </li>
+          <li class="completed">
+            <div class="view">
+              <input class="toggle" type="checkbox" checked /><label
+                >Todo 2</label
+              ><button class="destroy"></button>
+            </div>
+          </li>
+          <li class="editing">
+            <div class="view">
+              <input class="toggle" type="checkbox" /><label>Todo 3</label
+              ><button class="destroy"></button>
+            </div>
+            <input type="text" class="edit" value="Todo 3" />
+          </li> -->
+        </ul>
+      </section>
+      <footer class="footer">
+        <span class="todo-count"><strong>0</strong> items left</span>
+        <ul class="filters">
+          <li>
+            <a href="/" class="selected">All</a>
+          </li>
+          <li>
+            <a href="/active">Active</a>
+          </li>
+          <li>
+            <a href="/completed">Completed</a>
+          </li>
+        </ul>
+        <button class="clear-completed">Clear completed</button>
+      </footer>
+    </section>
+    <!-- <script src="index.js"></script> -->
+    <script src="main.js"></script>
   </body>
 </html>
