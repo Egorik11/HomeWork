@@ -9,7 +9,7 @@ async function mainTodos() {
     const check = contentText[key].completed ? "checked" : "";
     const complet = contentText[key].completed ? "completed" : "";
     console.log(contentText[key]);
-    todoList.innerHTML += `<li class="">
+    todoList.innerHTML += `<li class="${complet}">
         <div class="view">
           <input class="toggle" type="checkbox" ${check} /><label
             >${contentText[key].title}</label
