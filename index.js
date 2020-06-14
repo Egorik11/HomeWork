@@ -1,210 +1,310 @@
-async function mainTodos() {
-  const todoList = document.querySelector(".todo-list");
-  const clerTodos = document.querySelector(".clear-completed");
-  let response = await fetch("https://jsonplaceholder.typicode.com/todos");
-  let contentText = await response.json();
-  contentText = contentText.splice(0, 3);
+// // codesandbox https://codesandbox.io/s/json-server-whu3w?file=/db.json
+// // JSON Server https://whu3w.sse.codesandbox.io/todos
 
-  for (let key in contentText) {
-    const check = contentText[key].completed ? "checked" : "";
-    const complet = contentText[key].completed ? "completed" : "";
-    console.log(contentText[key]);
-    todoList.innerHTML += `<li class="${complet}">
-        <div class="view">
-          <input class="toggle" type="checkbox" ${check} /><label
-            >${contentText[key].title}</label
-          ><button class="destroy"></button>
-        </div>
-      </li>`;
-  }
-  const initTodos = document.querySelectorAll(".todo-list li");
-  initTodos.forEach((todo) => {
-    bindTodoEvents(todo);
-    bindTodosEvent();
-  });
+// const todoList = document.querySelector(".todo-list");
+// // const newTodo = document.querySelector('.new-todo')
+// // const getRandomBoolean = () => Math.random() >= 0.5;
+// const url = "https://whu3w.sse.codesandbox.io/todos";
 
-  const newTodo = document.querySelector(".new-todo");
+// function getItems(queryParams = "") {
+//   return fetch(url + queryParams)
+// 		.then((response) => response.json())
+//     .catch((error) => console.error(error));
+// }
 
-  const todoCount = document.querySelector(".todo-count strong");
-  todoCount.textContent = contentText.length;
+// const renderTodos = (contentText) => {
+//   for (let key in contentText) {
+//     const check = contentText[key].completed ? "checked" : "";
+//     const complet = contentText[key].completed ? "completed" : "";
+//     console.log(contentText[key]);
+//     todoList.innerHTML += `<li class="${complet}">
+//         <div class="view">
+//           <input class="toggle" type="checkbox" ${check} /><label
+//             >${contentText[key].title}</label
+//           ><button class="destroy"></button>
+//         </div>
+//       </li>`;
+//   }
+// };
 
-  clerTodos.style.display = "none";
+// async function mainTodos() {
+//   const todoList = document.querySelector(".todo-list");
+//   const clerTodos = document.querySelector(".clear-completed");
+// 	let contentText = await getItems();
+// 	console.log(contentText);
+// 	renderTodos(contentText)
 
-  newTodo.addEventListener("keyup", (event) => {
-    if (event.keyCode === 13 && newTodo.value !== "") {
-      const todo = createTodo(newTodo.value);
-      todoList.append(todo);
-      newTodo.value = "";
+	
+	
+//   const initTodos = document.querySelectorAll(".todo-list li");
+//   initTodos.forEach((todo) => {
+//     bindTodoEvents(todo);
+//     bindTodosEvent();
+//   });
 
-      const todos = [...todoList.querySelectorAll("li")];
-      countTodos(todos);
-      bindTodosEvent(todos);
-    }
-  });
+//   const newTodo = document.querySelector(".new-todo");
 
-  function createTodo(title) {
-    const todo = document.createElement("li");
-    todo.innerHTML = `<div class="view">
-  <!-- completed, editing -->
-  <input class="toggle" type="checkbox"/>
-  <!-- checked -->
-  <label>${title}</label>
-  <button class="destroy"></button>
-  </div>
-  <input type="text" class="edit" value="Todo 3" />`;
+//   const todoCount = document.querySelector(".todo-count strong");
+//   todoCount.textContent = contentText.length;
 
-    bindTodoEvents(todo);
+//   clerTodos.style.display = "none";
 
-    return todo;
-  }
+//   newTodo.addEventListener("keyup", (event) => {
+//     if (event.keyCode === 13 && newTodo.value !== "") {
+//       const todo = createTodo(newTodo.value);
+//       todoList.append(todo);
+//       newTodo.value = "";
 
-  function countTodos(todos) {
-    const active = todos.reduce((active, todo) => {
-      if (!todo.classList.contains("completed")) {
-        active.push(todo);
-      }
-      return active;
-    }, []);
+//       const todos = [...todoList.querySelectorAll("li")];
+//       countTodos(todos);
+//       bindTodosEvent(todos);
+//     }
+//   });
 
-    if (todos.length >= 1) {
-      todoCount.textContent = active.length;
-    }
-  }
+//   function createTodo(title) {
+//     const todo = document.createElement("li");
+//     todo.innerHTML = `<div class="view">
+//   <!-- completed, editing -->
+//   <input class="toggle" type="checkbox"/>
+//   <!-- checked -->
+//   <label>${title}</label>
+//   <button class="destroy"></button>
+//   </div>
+//   <input type="text" class="edit" value="Todo 3" />`;
 
-  function bindTodoEvents(todo) {
-    const destroy = todo.querySelector(".destroy");
-    const toggle = todo.querySelector(".toggle");
-    const title = todo.querySelector("label");
+//     bindTodoEvents(todo);
 
-    destroy.onclick = deleteTodo;
-    toggle.onclick = toggleTodo;
-    title.addEventListener("dblclick", editText);
-  }
+//     return todo;
+//   }
 
-  function bindTodosEvent(todos) {
-    const toggleAll = document.querySelector(".toggle-all").nextElementSibling;
-    const filterAll = document.querySelector('[href="/"]');
+//   function countTodos(todos) {
+//     const active = todos.reduce((active, todo) => {
+//       if (!todo.classList.contains("completed")) {
+//         active.push(todo);
+//       }
+//       return active;
+//     }, []);
 
-    const filterActive = document.querySelector('[href="/active"]');
-    const filterCompleted = document.querySelector('[href="/completed"]');
+//     if (todos.length >= 1) {
+//       todoCount.textContent = active.length;
+//     }
+//   }
 
-    toggleAll.onclick = toggleAllTodos;
-    clerTodos.onclick = clearCompleted;
-    filterAll.onclick = filterTodosAll;
-    filterActive.onclick = filterTodosActive;
-    filterCompleted.onclick = filterTodosCompleted;
-  }
+//   function bindTodoEvents(todo) {
+//     const destroy = todo.querySelector(".destroy");
+//     const toggle = todo.querySelector(".toggle");
+//     const title = todo.querySelector("label");
 
-  function deleteTodo() {
-    const todo = this.closest("li");
+//     destroy.onclick = deleteTodo;
+//     toggle.onclick = toggleTodo;
+//     title.addEventListener("dblclick", editText);
+//   }
 
-    if (!todo.classList.contains("completed")) {
-      --todoCount.textContent;
-    }
+//   function bindTodosEvent(todos) {
+//     // const toggleAll = document.querySelector(".toggle-all").nextElementSibling;
+//     const filterAll = document.querySelector('[href="/"]');
 
-    todo.remove();
-  }
+//     const filterActive = document.querySelector('[href="/active"]');
+//     const filterCompleted = document.querySelector('[href="/completed"]');
 
-  function toggleTodo() {
-    const todo = this.closest("li");
-    todo.classList.toggle("completed");
-    const todos = [...todoList.querySelectorAll("li")];
-    const completed = todos.reduce((completed, todo) => {
-      if (todo.classList.contains("completed")) {
-        completed.push(todo);
-      }
-      return completed;
-    }, []);
+//     // toggleAll.onclick = toggleAllTodos;
+//     // clerTodos.onclick = clearCompleted;
+//     filterAll.onclick = filterTodosAll;
+//     filterActive.onclick = filterTodosActive;
+//     filterCompleted.onclick = filterTodosCompleted;
+//   }
 
-    if (todo.classList.contains("completed")) {
-      todoCount.textContent--;
-      clerTodos.style.display = "block";
-    } else {
-      todoCount.textContent++;
-    }
+//   function deleteTodo() {
+//     const todo = this.closest("li");
 
-    if (completed.length === 0) {
-      clerTodos.style.display = "none";
-    }
-  }
+//     if (!todo.classList.contains("completed")) {
+//       --todoCount.textContent;
+//     }
 
-  function editText() {
-    const todo = this.closest("li");
-    const title = todo.querySelector("label");
-    const editField = todo.querySelector(".edit");
-    editField.value = title.innerText;
-    todo.className = "editing";
+//     todo.remove();
+//   }
 
-    editField.addEventListener("keyup", (event) => {
-      if (event.keyCode === 13 && editField.value !== "") {
-        todo.classList.remove("editing");
-        title.innerText = editField.value;
-      }
-    });
-  }
+//   function toggleTodo() {
+//     const todo = this.closest("li");
+//     todo.classList.toggle("completed");
+//     const todos = [...todoList.querySelectorAll("li")];
+//     const completed = todos.reduce((completed, todo) => {
+//       if (todo.classList.contains("completed")) {
+//         completed.push(todo);
+//       }
+//       return completed;
+//     }, []);
 
-  function toggleAllTodos() {
-    const todos = [...document.querySelectorAll(".todo-list li")];
-    const completed = todos.reduce((completed, todo) => {
-      if (todo.classList.contains("completed")) {
-        completed.push(todo);
-      }
-      return completed;
-    }, []);
+//     if (todo.classList.contains("completed")) {
+//       todoCount.textContent--;
+//       clerTodos.style.display = "block";
+//     } else {
+//       todoCount.textContent++;
+//     }
 
-    todos.forEach((todo) => {
-      const toggle = todo.querySelector(".toggle");
+//     if (completed.length === 0) {
+//       clerTodos.style.display = "none";
+//     }
+//   }
 
-      if (!todo.classList.contains("completed")) {
-        todo.className = "completed";
-        toggle.checked = true;
-        --todoCount.textContent;
-        clerTodos.style.display = "block";
-      } else if (completed.length === todos.length) {
-        todo.classList.remove("completed");
-        toggle.checked = false;
-        ++todoCount.textContent;
-        clerTodos.style.display = "none";
-      }
-    });
-  }
+//   function editText() {
+//     const todo = this.closest("li");
+//     const title = todo.querySelector("label");
+//     const editField = todo.querySelector(".edit");
+//     editField.value = title.innerText;
+//     todo.className = "editing";
 
-  function clearCompleted() {
-    const todos = [...document.querySelectorAll(".todo-list li")];
+//     editField.addEventListener("keyup", (event) => {
+//       if (event.keyCode === 13 && editField.value !== "") {
+//         todo.classList.remove("editing");
+//         title.innerText = editField.value;
+//       }
+//     });
+//   }
 
-    todos.forEach((todo) => {
-      if (todo.classList.contains("completed")) {
-        todo.remove();
-      }
-    });
-  }
+//   function toggleAllTodos() {
+//     const todos = [...document.querySelectorAll(".todo-list li")];
+//     const completed = todos.reduce((completed, todo) => {
+//       if (todo.classList.contains("completed")) {
+//         completed.push(todo);
+//       }
+//       return completed;
+//     }, []);
 
-  function filterTodosAll(event) {
-    event.preventDefault();
-    console.log("fdfdf");
-    const todos = [...document.querySelectorAll(".todo-list li")];
-    todos.forEach((todo) => {
-      todo.style.display = "block";
-    });
-  }
+//     todos.forEach((todo) => {
+//       const toggle = todo.querySelector(".toggle");
 
-  function filterTodosActive(event) {
-    event.preventDefault();
-    const todos = [...document.querySelectorAll(".todo-list li")];
-    todos.forEach((todo) => {
-      if (todo.classList.contains("completed")) {
-        todo.style.display = "none";
-      } else todo.style.display = "block";
-    });
-  }
-  function filterTodosCompleted(event) {
-    event.preventDefault();
-    const todos = [...document.querySelectorAll(".todo-list li")];
-    todos.forEach((todo) => {
-      if (!todo.classList.contains("completed")) {
-        todo.style.display = "none";
-      } else todo.style.display = "block";
-    });
-  }
-}
-mainTodos();
+//       if (!todo.classList.contains("completed")) {
+//         todo.className = "completed";
+//         toggle.checked = true;
+//         --todoCount.textContent;
+//         clerTodos.style.display = "block";
+//       } else if (completed.length === todos.length) {
+//         todo.classList.remove("completed");
+//         toggle.checked = false;
+//         ++todoCount.textContent;
+//         clerTodos.style.display = "none";
+//       }
+//     });
+//   }
+
+//   function clearCompleted() {
+//     const todos = [...document.querySelectorAll(".todo-list li")];
+
+//     todos.forEach((todo) => {
+//       if (todo.classList.contains("completed")) {
+//         todo.remove();
+//       }
+//     });
+//   }
+
+//   function filterTodosAll(event) {
+//     event.preventDefault();
+//     console.log("fdfdf");
+//     const todos = [...document.querySelectorAll(".todo-list li")];
+//     todos.forEach((todo) => {
+//       todo.style.display = "block";
+//     });
+//   }
+
+//   function filterTodosActive(event) {
+//     event.preventDefault();
+//     const todos = [...document.querySelectorAll(".todo-list li")];
+//     todos.forEach((todo) => {
+//       if (todo.classList.contains("completed")) {
+//         todo.style.display = "none";
+//       } else todo.style.display = "block";
+//     });
+//   }
+//   function filterTodosCompleted(event) {
+//     event.preventDefault();
+//     const todos = [...document.querySelectorAll(".todo-list li")];
+//     todos.forEach((todo) => {
+//       if (!todo.classList.contains("completed")) {
+//         todo.style.display = "none";
+//       } else todo.style.display = "block";
+//     });
+//   }
+// }
+// mainTodos();
+
+// // class Request {
+// //   constructor() {
+// //     this.init();
+// //   }
+// //   init() {
+// //     this.todoList = document.querySelector(".todo-list");
+// //     this.url = "https://whu3w.sse.codesandbox.io/todos";
+// //     this.filterActive = document.querySelector('[href="/active"]')
+// //     this.getRandomBoolean = () => Math.random() >= 0.5;
+// //   }
+// //   getItems(queryParams) {
+// //     fetch(this.url + queryParams)
+// //       .then((response) => response.json())
+// //       .then((data) => {
+// //         for (let key in data) {
+// //           const check = data[key].completed ? "checked" : "";
+// //           const completed = data[key].completed ? "completed" : "";
+// //           console.log(data[key]);
+// //           this.todoList.innerHTML += `<li class="${completed}">
+// //               <div class="view">
+// //                 <input class="toggle" type="checkbox" ${check} /><label
+// //                   >${data[key].title}</label
+// //                 ><button class="destroy"></button>
+// //               </div>
+// //             </li>`;
+// //         }
+// //       })
+// //       .catch((error) => console.error(error));
+// //     this.init();
+// //   }
+// //   addItem(title) {
+// //     const body = {
+// //       id,
+// //       title,
+// //       completed: this.getRandomBoolean(),
+// //     };
+// //     fetch(this.url, {
+// //       method: "POST",
+// //       headers: {
+// //         "Content-Type": "application/json",
+// //       },
+// //       body: JSON.stringify(body),
+// //     })
+// //       .then((response) => response.json())
+// //       .then((data) => console.log(data))
+// //       .catch((error) => console.error(error));
+// //     this.getItems();
+// //   }
+  // deleteItem(id) {
+  //   fetch(this.url + "/" + id, {
+  //     method: "DELETE",
+  //   })
+  //     .then(() => this.getItems())
+  //     .catch((error) => console.log(error));
+  //   // this.init();
+  // }
+// //   putItem(title,id) {
+// //     const body = {
+// //       id,
+// //       title,
+// //       completed: this.getRandomBoolean()
+// //     }
+// //     fetch(this.url + "/" + id, {
+// //       method: "PUT",
+// //       headers: {
+// //         "Accept": "application/json",
+// //         "Content-Type": "application/json",
+// //       },
+// //       body: JSON.stringify(body)
+// //     })
+// //     .then(() => this.getItems())
+// //     .catch(error => console.log(error))
+// //   }
+// // }
+
+// // const request = new Request();
+// // request.getItems();
+// // request.addItem("fdfd");
+// // request.deleteItem(3);
+// // request.putItem("New Title",3)
