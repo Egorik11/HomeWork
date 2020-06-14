@@ -2,7 +2,6 @@
 // JSON Server https://whu3w.sse.codesandbox.io/todos
 
 const todoList = document.querySelector(".todo-list");
-// const newTodo = document.querySelector('.new-todo')
 const getRandomBoolean = () => Math.random() >= 0.5;
 const url = "https://whu3w.sse.codesandbox.io/todos";
 const todoCount = null;
@@ -29,6 +28,7 @@ const renderTodos = (contentText) => {
       </li>`;
   }
 };
+
 async function main() {
   const items = await getItems();
   renderTodos(items);
@@ -37,6 +37,13 @@ async function main() {
   const filterAll = document.querySelector('[href="/"]');
   const filterCompleted = document.querySelector('[href="/completed"]');
   const destroy = document.querySelectorAll(".destroy");
+  const titles = document.querySelectorAll("label");
+
+  titles.forEach((title) => {
+    title.addEventListener("dblclick", (event) => {
+      editTodos(event, "Новая туду");
+    });
+  });
 
   newTodo.addEventListener("keyup", (event) => {
     if (event.keyCode === 13 && newTodo.value !== "") {
@@ -46,14 +53,20 @@ async function main() {
     }
   });
 
+  destroy.forEach((item) => {
+    item.addEventListener("click", deleteTodos);
+  });
+
   filterAll.addEventListener("click", (event) => {
     event.preventDefault();
     allTodos();
   });
+
   filterActive.addEventListener("click", (event) => {
     event.preventDefault();
     activeTodos();
   });
+
   filterCompleted.addEventListener("click", (event) => {
     event.preventDefault();
     completedTodos();
@@ -119,4 +132,46 @@ function completedTodos() {
       todo.style.display = "none";
     } else todo.style.display = "block";
   });
+}
+
+async function deleteTodos(event) {
+  const target = event.target;
+  const todo = target.closest("li");
+  todo.remove();
+  await fetch(url + "/" + todo.id, {
+    method: "DELETE",
+  })
+    .then(() => getItems())
+    .catch((error) => console.log(error));
+}
+
+function editTodos(event, title) {
+  const target = event.target;
+  const todo = target.closest("li");
+  // const title = target.querySelector('label')
+  // const editField = target.querySelector('.edit')
+  // editField.value = title.innerText
+  // target.className = 'editing'
+
+  // editField.addEventListener('keyup', event => {
+  //   if (event.keyCode === 13 && editField.value !== '') {
+  //     target.classList.remove('editing')
+  //     title.innerText = editField.value
+  //   }
+  // })
+
+  const body = {
+    title,
+    completed: getRandomBoolean(),
+  };
+  fetch(url + "/" + todo.id, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(() => getItems())
+    .catch((error) => console.log(error));
 }
