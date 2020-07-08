@@ -14,5 +14,6 @@ export default function PostTitle({ posts }) {
       </div>
       <hr />
     </div>
+    
   );
 }
